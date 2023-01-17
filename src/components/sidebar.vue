@@ -140,16 +140,40 @@ const items = [
     },
     {
         icon: 'Warning',
-        index: '/permission',
-        title: '权限管理',
+        index: '/filemanage',
+        title: '文件管理',
         permiss: '13',
     },
-    {
-        icon: 'CoffeeCup',
-        index: '/donate',
-        title: '支持作者',
-        permiss: '14',
-    },
+    // {
+    //     icon: 'CoffeeCup',
+    //     index: '/donate',
+    //     title: '支持作者',
+    //     permiss: '14',
+    // },
+  {
+    icon: 'Edit',
+    index: '/record',
+    title: '写日记',
+    permiss: '14',
+  },
+  {
+    icon: 'Calendar',
+    index: '/recordslist',
+    title: '日记列表',
+    permiss: '15',
+  },
+  {
+    icon: 'Edit',
+    index: '/memorandum',
+    title: '备忘录',
+    permiss: '16',
+  },
+  {
+    icon: 'Edit',
+    index: '/user',
+    title: '个人中心',
+    permiss: '16',
+  },
 ];
 
 const route = useRoute();

@@ -6,6 +6,16 @@ import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 export default defineConfig({
 	base: './',
+	server: {
+		proxy: {
+			"/api": {
+				target: "http://localhost:8089",
+				ws: true,
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, ""),
+			},
+		},
+	},
 	plugins: [
 		vue(),
 		VueSetupExtend(),
@@ -18,5 +28,8 @@ export default defineConfig({
 	],
 	optimizeDeps: {
 		include: ['schart.js']
-	}
+	},
+
 });
+
+

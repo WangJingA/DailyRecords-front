@@ -8,6 +8,10 @@ const routes: RouteRecordRaw[] = [
         redirect: '/dashboard',
     },
     {
+        path:'/register',
+        component: () => import('../views/register.vue')
+    },
+    {
         path: '/',
         name: 'Home',
         component: Home,
@@ -40,6 +44,33 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "charts" */ '../views/charts.vue'),
             },
             {
+                path: '/record',
+                name: 'baserecord',
+                meta: {
+                    title: '写日记',
+                    permiss: '14',
+                },
+                component: () => import(/* webpackChunkName: "charts" */ '../views/record.vue'),
+            },
+            {
+                path: '/memorandum',
+                name: 'basememorandum',
+                meta: {
+                    title: '备忘录',
+                    permiss: '16',
+                },
+                component: () => import(/* webpackChunkName: "charts" */ '../views/memorandum.vue'),
+            },
+            {
+                path: '/recordslist',
+                name: 'baserecordslist',
+                meta: {
+                    title: '日记列表',
+                    permiss: '15',
+                },
+                component: () => import(/* webpackChunkName: "charts" */ '../views/recordslist.vue'),
+            },
+            {
                 path: '/form',
                 name: 'baseform',
                 meta: {
@@ -57,23 +88,32 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "tabs" */ '../views/tabs.vue'),
             },
+            // {
+            //     path: '/donate',
+            //     name: 'donate',
+            //     meta: {
+            //         title: '鼓励作者',
+            //         permiss: '14',
+            //     },
+            //     component: () => import(/* webpackChunkName: "donate" */ '../views/donate.vue'),
+            // },
+            // {
+            //     path: '/permission',
+            //     name: 'permission',
+            //     meta: {
+            //         title: '权限管理',
+            //         permiss: '13',
+            //     },
+            //     component: () => import(/* webpackChunkName: "permission" */ '../views/permission.vue'),
+            // },
             {
-                path: '/donate',
-                name: 'donate',
+                path: '/filemanage',
+                name: 'filemanage',
                 meta: {
-                    title: '鼓励作者',
-                    permiss: '14',
-                },
-                component: () => import(/* webpackChunkName: "donate" */ '../views/donate.vue'),
-            },
-            {
-                path: '/permission',
-                name: 'permission',
-                meta: {
-                    title: '权限管理',
+                    title: '文件管理',
                     permiss: '13',
                 },
-                component: () => import(/* webpackChunkName: "permission" */ '../views/permission.vue'),
+                component: () => import(/* webpackChunkName: "upload" */ '../views/filemanage.vue'),
             },
             {
                 path: '/upload',
