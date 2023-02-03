@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import encroy from '../utils/AESUtil'
 import { ref, reactive } from 'vue';
 import { useTagsStore } from '../store/tags';
 import { usePermissStore } from '../store/permiss';
@@ -63,6 +64,7 @@ interface CheckCode {
 }
 const code = reactive<CheckCode>({
   checkCode: '/api/login/getCheckCode/date='+new Date()
+  // checkCode: '/api/vaildate/getCode/date='+new Date()
 });
 const router = useRouter();
 const param = reactive<LoginInfo>({
@@ -88,27 +90,37 @@ const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate((valid: boolean) => {
 		if (valid) {
-			ElMessage.success('登录成功');
+			// ElMessage.success('登录成功');
 			localStorage.setItem('ms_username', param.userMail);
 			const keys = permiss.defaultList[param.userMail == 'admin' ? 'admin' : 'user'];
 			permiss.handleSet(keys);
 			localStorage.setItem('ms_keys', JSON.stringify(keys));
        var formData = new FormData();
+       var encryptKey = "ABCDEFGHIJKHOQUV";
+       var userPass = encroy.encrypt({word: param.userPass, keyStr: encryptKey});
        formData.append("userMail",param.userMail);
-       formData.append("userPass",param.userPass);
+       formData.append("userPass",userPass);
        formData.append("code",param.code);
-      userLogin(formData).then(response=>{
+      userLogin({data: formData}).then(response=>{
         console.log(response.data)
+        //获取token，路由跳转
+        if (response.data.data.token){
+          ElMessage.success("登录成功")
+          localStorage.setItem("token",response.data.data.token);
+          router.push('/');
+        }else {
+          ElMessage.error(response.data.data.msg)
+        }
       })
-			// router.push('/');
 		} else {
-			ElMessage.error('登录成功');
+			ElMessage.error('登录信息不完整');
 			return false;
 		}
 	});
 };
 const changeCode=()=>{
   code.checkCode = '/api/login/getCheckCode/date='+new Date()
+  // code.checkCode = '/api/vaildate/getCode/date='+new Date()
 }
 const registe=()=>{
   router.push('/memorandum');

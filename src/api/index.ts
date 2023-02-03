@@ -10,21 +10,34 @@ export const fetchData = () => {
 export const getWeather = () => {
     return request({
         url: '/login/getCheckCode/date='+new Date(),
-        // url: '/login/getCheckCode/date='+new Date(),
+        // url: '/vaildate/getCode/date='+new Date(),
         method: 'get'
     });
 };
-export const sendEmailCode = (data) => {
+export const sendEmailCode = ({data}: { data: any }) => {
     return request({
-        url: '/login/sendRegisCode?email='+data,
-        method: 'get',
+        url: '/record/code?email='+data,
+        method: 'post',
         data:data
     });
 };
-export const userLogin = (data) => {
+export const userLogin = ({data}: { data: any }) => {
     return request({
         url: '/record/login',
         method: 'post',
         data:data
+    });
+};
+export const register = ({data}: { data: any }) => {
+    return request({
+        url: '/record/regis',
+        method: 'post',
+        data: data
+    });
+};
+export const getRecordType = () => {
+    return request({
+        url: '/record/getRecordType',
+        method: 'get',
     });
 };

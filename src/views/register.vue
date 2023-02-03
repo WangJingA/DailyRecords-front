@@ -57,8 +57,9 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
-import {getWeather, sendEmailCode} from '../api/index';
+import {getWeather, register, sendEmailCode} from '../api/index';
 import {AxiosResponse} from "axios";
+import encroy from "../utils/AESUtil";
 
 
 interface LoginInfo {
@@ -104,14 +105,25 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate((valid: boolean) => {
     if (valid) {
-      ElMessage.success('登录成功');
+      // ElMessage.success('登录成功');
       localStorage.setItem('ms_username', param.username);
       const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
       permiss.handleSet(keys);
       localStorage.setItem('ms_keys', JSON.stringify(keys));
-      getWeather().then((response:AxiosResponse)=>{
-        code.checkCode = response.data
-      })
+      var formData = new FormData();
+      var encryptKey = "ABCDEFGHIJKHOQUV";
+      var userPass = encroy.encrypt({word: param.password, keyStr: encryptKey});
+      formData.append("userMail",param.email);
+      formData.append("userPass",userPass);
+      formData.append("code",param.validCode);
+      formData.append("userName",param.username);
+     register({data: formData}).then(response=>{
+       ElMessage.success(response.data.data.msg)
+       if (response.data.code=="200"){
+         router.push("/login")
+       }
+       console.log(response.data)
+     })
       // router.push('/');
     } else {
       ElMessage.error('登录成功');
@@ -126,23 +138,29 @@ const registe=()=>{
   router.push('/memorandum');
 }
 const sendcode=()=>{
-  code.disable = true
+
   //调用后端接口发送邮箱注册码
-    sendEmailCode(param.email).then(response=>{
+  if (param.email!= "") {
+    code.disable = true
+    sendEmailCode({data: param.email}).then(response => {
+      ElMessage.success(response.data.data.msg)
       console.log(response.data)
     })
-  //定时
-  var timer = setInterval(()=>{
-    if(code.count>0){
-      code.count--
-      code.checkCode = '重新获取'+code.count
-    }else{
-      code.count = 60
-      code.disable = false
-      code.checkCode = '发送邮箱验证码'
-      clearInterval(timer)
-    }
-  },1000)
+    //定时
+    var timer = setInterval(() => {
+      if (code.count > 0) {
+        code.count--
+        code.checkCode = '重新获取' + code.count
+      } else {
+        code.count = 60
+        code.disable = false
+        code.checkCode = '发送邮箱验证码'
+        clearInterval(timer)
+      }
+    }, 1000);
+  }else {
+    ElMessage.error("邮箱地址不存在")
+  }
 }
 const tags = useTagsStore();
 tags.clearTags();
