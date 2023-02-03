@@ -142,7 +142,7 @@ const items = [
         icon: 'Warning',
         index: '/filemanage',
         title: '文件管理',
-        permiss: '13',
+        permiss: '12',
     },
     // {
     //     icon: 'CoffeeCup',
@@ -154,19 +154,19 @@ const items = [
     icon: 'Edit',
     index: '/record',
     title: '写日记',
-    permiss: '14',
+    permiss: '13',
   },
   {
     icon: 'Calendar',
     index: '/recordslist',
     title: '日记列表',
-    permiss: '15',
+    permiss: '14',
   },
   {
     icon: 'Edit',
     index: '/memorandum',
     title: '备忘录',
-    permiss: '16',
+    permiss: '15',
   },
   {
     icon: 'Edit',

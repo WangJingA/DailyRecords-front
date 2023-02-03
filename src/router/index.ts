@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'baserecord',
                 meta: {
                     title: '写日记',
-                    permiss: '14',
+                    permiss: '13',
                 },
                 component: () => import(/* webpackChunkName: "charts" */ '../views/record.vue'),
             },
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'basememorandum',
                 meta: {
                     title: '备忘录',
-                    permiss: '16',
+                    permiss: '15',
                 },
                 component: () => import(/* webpackChunkName: "charts" */ '../views/memorandum.vue'),
             },
@@ -66,7 +66,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'baserecordslist',
                 meta: {
                     title: '日记列表',
-                    permiss: '15',
+                    permiss: '14',
                 },
                 component: () => import(/* webpackChunkName: "charts" */ '../views/recordslist.vue'),
             },
@@ -111,7 +111,7 @@ const routes: RouteRecordRaw[] = [
                 name: 'filemanage',
                 meta: {
                     title: '文件管理',
-                    permiss: '13',
+                    permiss: '12',
                 },
                 component: () => import(/* webpackChunkName: "upload" */ '../views/filemanage.vue'),
             },

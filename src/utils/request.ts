@@ -1,4 +1,5 @@
 import axios, {AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig} from 'axios';
+import router from "../router";
 
 const service:AxiosInstance = axios.create({
     baseURL:'/api',
@@ -8,6 +9,15 @@ const service:AxiosInstance = axios.create({
 
 service.interceptors.request.use(
     (config: AxiosRequestConfig) => {
+        if (localStorage.getItem("token")){
+            if (!config) {
+                config = {};
+            }
+            if (!config.headers) {
+                config.headers = {};
+            }
+            config.headers['token']  = localStorage.getItem("token")
+        }
         return config;
     },
     (error: AxiosError) => {
@@ -20,7 +30,16 @@ service.interceptors.response.use(
     (response: AxiosResponse) => {
         if (response.status === 200) {
             return response;
-        } else {
+        }else if(response.status === 401){
+            localStorage.removeItem('token');
+            router.replace({
+                path: '/login',
+                // query: {
+                //     redirect: router.currentRoute.fullPath  //登录成功后跳入浏览的当前页
+                // }
+            })
+        }
+        else {
             Promise.reject();
         }
     },

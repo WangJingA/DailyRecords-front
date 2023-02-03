@@ -1,9 +1,14 @@
 <template>
   <div class="container">
     <div class="plugins-tips">
-      wangEditor：轻量级 web 富文本编辑器，配置方便，使用简单。 访问地址：
-      <a href="https://www.wangeditor.com/doc/" target="_blank">wangEditor</a>
+<!--      <a href="https://www.wangeditor.com/doc/" target="_blank">wangEditor</a>-->
+      <p v-for="(record,index) in recordType.type" :key="index">《{{record.recordName}}》{{record.recordDesc}}</p>
     </div>
+请选择日志类型：
+    <el-select v-model="recordType.selectType" placeholder="日志类型" class="handle-select mr10">
+      <el-option key="1" :label="record.recordName" :value="record.recordName" v-for="(record,index) in recordType.type" :key="index">{{record.recordName}}</el-option>
+    </el-select>
+
     <div class="mgb20" ref="editor"></div>
     <el-button type="primary" @click="syncHTML">提交</el-button>
   </div>
@@ -12,17 +17,31 @@
 <script setup lang="ts" name="editor">
 import WangEditor from 'wangeditor';
 import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import {getRecordType} from "../api";
 
 const editor = ref(null);
 const content = reactive({
   html: '',
   text: ''
 });
+interface recordType{
+  type:Array<any>;
+  selectType:String;
+}
+const recordType = reactive<recordType>({
+  type:[],
+  selectType:""
+})
+
 let instance: any;
 onMounted(() => {
   instance = new WangEditor(editor.value);
   instance.config.zIndex = 1;
   instance.create();
+  getRecordType().then(response=>{
+    recordType.type = response.data.data
+    console.log(recordType.type)
+  })
 });
 onBeforeUnmount(() => {
   instance.destroy();
@@ -34,4 +53,9 @@ const syncHTML = () => {
 };
 </script>
 
-<style></style>
+<style>
+.handle-select {
+  width: 200px;
+  margin-bottom: 20px;
+}
+</style>
